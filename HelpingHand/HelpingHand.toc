@@ -1,0 +1,10 @@
+## Interface: 11000
+## Title: |cFF006699Optional -|r Helping hand
+## Notes: HelpingHand
+## SavedVariables: HelpingHand_SavedVariables
+FixGroups.lua
+HelpingHand.lua
+HelpingHand.xml
+AlteracValley.lua
+WorldBosses.lua
+
