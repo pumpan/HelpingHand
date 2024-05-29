@@ -1,6 +1,6 @@
 # HelpingHand
 
-HelpingHand is a World of Warcraft addon designed to provide assistance in tracking world bosses, announcing their abilities, guiding players to the next boss location, monitoring battleground progress, and much more.
+HelpingHand is a World of Warcraft 1.12.1 addon designed to provide assistance in tracking world bosses, announcing their abilities, guiding players to the next boss location, monitoring battleground progress, and much more.
 
 
 
