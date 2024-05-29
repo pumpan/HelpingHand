@@ -1,5 +1,7 @@
 # HelpingHand
 
+### HelpingHand is a World of Warcraft addon designed to provide assistance in tracking world bosses, announcing their abilities, guiding players to the next boss location, and monitoring battleground progress and much more.
+
 ![](Screenshots/worldbosses.png)
 ![](Screenshots/av.png)
 ![](Screenshots/whirlwind.png)
@@ -13,8 +15,6 @@
  2. Extract the contents of the zip file into your WoW Classic Interface\AddOns\HelpingHand
  3. Launch World of Warcraft and ensure that the addon is enabled in the character selection screen.
 
-
-HelpingHand is a World of Warcraft addon designed to provide assistance in tracking world bosses, announcing their abilities, guiding players to the next boss location, and monitoring battleground progress and much more.
 ## Features
 ### WorldBosses (you need to be leader/assistant leader)
 + Boss Ability Announcements: When you target a boss it announces is raid about world boss abilities to better prepare for encounters.
@@ -28,6 +28,7 @@ HelpingHand is a World of Warcraft addon designed to provide assistance in track
 ### Alterac Valley
 + Boss Health Announcements: Announces when Drek/Van health reaches 50%, 30%, 20%, and 10%.
 + WM Whirlwind timer. (right click the timer to announce how long it is until the wm whirlwinds)
++ Announces when GY is up
 
 ## Support
 For any issues, feedback, or feature requests, please open an issue on the GitHub repository. License This addon is licensed under the MIT License. Feel free to modify and distribute it according to the terms of the license.
