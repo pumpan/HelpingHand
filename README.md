@@ -22,6 +22,11 @@
 + Navigation Assistance 2: Replies whenever someone writes where in the worldboss raid where to go next.
 + Magic shield warning: Announces in raid when Azuregos magic shield is up/fades.
 + WorldBosses timer (right click to announce the durration)
+
+### Fixgroups 
+By clicking Fixgroups or using the slashcommand /fixgroups it starts to automaticaly trying to organize the groups. Since this addon 
+dont know wich specc a player use among other things this function is not 100%
+  
 ### Battleground
 + BattleGround Timer: Track the time from the battleground start to the completion of the battleground.
 + BattleGround Timer announce: Announce the time the battleground took.
@@ -33,4 +38,4 @@
 ## Support
 For any issues, feedback, or feature requests, please open an issue on the GitHub repository. License This addon is licensed under the MIT License. Feel free to modify and distribute it according to the terms of the license.
 
-# DO NOT USE AUTOFIXGROUPS JUST YET! THIS IS NOT WORKING AS IT SHOULD! THIS IS A BETA RELEASE
+# DO NOT USE AUTOFIXGROUPS JUST YET! THIS IS NOT WORKING AS IT SHOULD! THIS IS AN EARLY RELEASE
