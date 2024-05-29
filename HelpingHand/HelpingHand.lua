@@ -1,10 +1,12 @@
 local version = "1.0"
+DEFAULT_CHAT_FRAME:AddMessage("HelpingHand 1.0.0|cff00FF00 loaded.")
+
 HelpingHand_SavedVariables = HelpingHand_SavedVariables or {}
 HelpingHand_SavedVariables.Settings = HelpingHand_SavedVariables.Settings or
-    { AVEnabled = 0, WBEnabled = 0, WBWhereEnabled = 0, BGTimerEnabled = 0, AVBossesEnabled = 0, AutoFixGroupsEnabled = 0 }
+    { AVEnabled = 0, WBEnabled = 0, WBTimerFrameEnabled = 0, WBWhereEnabled = 0, BGTimerEnabled = 0, BGTimerFrameEnabled = 0, AVBossesEnabled = 0, AVWarmastersEnabled = 0, AutoFixGroupsEnabled = 0 }
 
 
-local function SetupTooltip(checkBox, text)
+function SetupTooltip(checkBox, text)
   checkBox:SetScript("OnEnter", function(self)
     GameTooltip:SetOwner(checkBox, "ANCHOR_RIGHT")
     GameTooltip:SetText(text, 1, 1, 1)
@@ -89,30 +91,56 @@ saveButton:SetScript("OnClick", function()
   end
   if HelpingHand_Settings.WBEnabled == 1 then
     EnableWorldBossesFeatures(true) -- Enable World Bosses features
+	DEFAULT_CHAT_FRAME:AddMessage("Wordboss |cff00FF00 ON.")
   else
     EnableWorldBossesFeatures(false) -- Disable World Bosses features
     DEFAULT_CHAT_FRAME:AddMessage("Worldboss|cFFFF0000 disabled.")
   end
-  if HelpingHand_Settings.WBEnabled == 1 then
+  if HelpingHand_Settings.WBTimerFrameEnabled == 1 then
+    EnableWBTimerFrameFeatures(true) -- Enable BG Timer feature
+	DEFAULT_CHAT_FRAME:AddMessage("Wb timer frame|cff00FF00 ON.")	
+  else  
+    EnableWBTimerFrameFeatures(false) -- Disable BG Timer feature
+    DEFAULT_CHAT_FRAME:AddMessage("WB Timer frame|cFFFF0000 disabled.")
+  end
+  if HelpingHand_Settings.WBWhereEnabled == 1 then
     EnableWorldBossesWhereFeatures(true) -- Enable World Bosses features
+	DEFAULT_CHAT_FRAME:AddMessage("Where Reply |cff00FF00 ON.")	
   else
     EnableWorldBossesWhereFeatures(false) -- Disable World Bosses features
     DEFAULT_CHAT_FRAME:AddMessage("Where Reply|cFFFF0000 disabled.")
   end
   if HelpingHand_Settings.BGTimerEnabled == 1 then
     EnableBGTimerFeatures(true) -- Enable BG Timer feature
+	DEFAULT_CHAT_FRAME:AddMessage("Bg timer |cff00FF00 ON.")	
   else
     EnableBGTimerFeatures(false) -- Disable BG Timer feature
     DEFAULT_CHAT_FRAME:AddMessage("BG Timer|cFFFF0000 disabled.")
+  end  
+  if HelpingHand_Settings.BGTimerFrameEnabled == 1 then
+    EnableBGTimerFrameFeatures(true) -- Enable BG Timer feature
+	DEFAULT_CHAT_FRAME:AddMessage("BG Timer frame|cff00FF00 ON.")	
+  else  
+    EnableBGTimerFrameFeatures(false) -- Disable BG Timer feature
+    DEFAULT_CHAT_FRAME:AddMessage("BG Timer frame|cFFFF0000 disabled.")
   end
   if HelpingHand_Settings.AVBossesEnabled == 1 then
     EnableAVBossesFeatures(true) -- Enable AV Bosses feature
+	DEFAULT_CHAT_FRAME:AddMessage("AV Bosses|cff00FF00 ON.")	
   else
     EnableAVBossesFeatures(false) -- Disable AV Bosses feature
     DEFAULT_CHAT_FRAME:AddMessage("AV Bosses|cFFFF0000 disabled.")
   end
+  if HelpingHand_Settings.AVWarmastersEnabled == 1 then
+    EnableAVWarmastersFeatures(true) -- Enable warmasters feature
+	DEFAULT_CHAT_FRAME:AddMessage("Warmasters |cff00FF00 ON.")	
+  else
+    EnableAVWarmastersFeatures(false) -- Disable warmasters feature
+    DEFAULT_CHAT_FRAME:AddMessage("Warmasters|cFFFF0000 disabled.")
+  end
   if HelpingHand_Settings.AutoFixGroupsEnabled == 1 then
     EnableAutoFixGroupsFeatures(true) -- Enable AutoFixGroupsFeatures
+	DEFAULT_CHAT_FRAME:AddMessage("Autofixgroups |cff00FF00 ON.")	
   else
     EnableAutoFixGroupsFeatures(false) -- Disable AutoFixGroupsFeatures
     DEFAULT_CHAT_FRAME:AddMessage("Autofix Groups|cFFFF0000 disabled.")
@@ -154,7 +182,7 @@ FixGroupsButton:RegisterForClicks("LeftButtonUp", "RightButtonDown")
 -- Set script for OnClick event
 FixGroupsButton:SetScript("OnClick", function()
   if arg1 == "LeftButton" then
-    SlashCmdList["FIXGROUPS2"]("")
+    SlashCmdList["FIXGROUPS"]("")
 
   elseif arg1 == "RightButton" then
     ToggleAutoFixGroupsFrame()
@@ -164,8 +192,8 @@ SetupTooltip(FixGroupsButton, FixGroupsButton.tooltipText)
 
 -- AV Frame
 local avFrame = CreateFrame("Frame", "AVFrame", UIParent)
-avFrame:SetWidth(200)
-avFrame:SetHeight(100)
+avFrame:SetWidth(250)
+avFrame:SetHeight(150)
 avFrame:SetBackdrop({
   bgFile = "Interface/Tooltips/UI-Tooltip-Background",
   edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -196,6 +224,25 @@ bgCheckbox:SetScript("OnClick", function()
 end)
 SetupTooltip(bgCheckbox, bgCheckbox.tooltipText)
 
+-- BG Timer visual
+local bgTimerFrameCheckbox = CreateFrame("CheckButton", "BGTimerFrameCheckbox", avFrame, "UICheckButtonTemplate")
+bgTimerFrameCheckbox:SetPoint("TOPLEFT", 10, -60)
+BGTimerFrameCheckboxText:SetText("Timer frame")
+bgTimerFrameCheckbox.tooltipText = "Visualy shows the timer as it updates."
+bgTimerFrameCheckbox:SetScript("OnClick", function()
+  HelpingHand_Settings.BGTimerFrameEnabled = bgTimerFrameCheckbox:GetChecked() and 1 or 0
+end)
+SetupTooltip(bgTimerFrameCheckbox, bgTimerFrameCheckbox.tooltipText)
+
+-- Warmasters whirlwind warning checkbox
+local avwarmastersCheckbox = CreateFrame("CheckButton", "avwarmastersCheckbox", avFrame, "UICheckButtonTemplate")
+avwarmastersCheckbox:SetPoint("TOPLEFT", 10, -85)
+avwarmastersCheckboxText:SetText("Whirlwind warn")
+avwarmastersCheckbox.tooltipText = "Countdown betweeen Warmaster whirlwinds."
+avwarmastersCheckbox:SetScript("OnClick", function()
+  HelpingHand_Settings.AVWarmastersEnabled = avwarmastersCheckbox:GetChecked() and 1 or 0
+end)
+SetupTooltip(avwarmastersCheckbox, avwarmastersCheckbox.tooltipText)
 
 -- Bg timer button and label
 local labelText = avFrame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
@@ -205,9 +252,9 @@ labelText:SetPoint("TOPLEFT", avFrame, "TOPLEFT", 90, -25)
 local function UpdateLabelText()
     if battlegrounds then
         labelText:SetText(
-            "Best time AV: " .. string.format("%02d:%02d", battlegrounds.AV.bestTimeEverShow.minutes, battlegrounds.AV.bestTimeEverShow.seconds) ..
-            "\nBest time WSG: " .. string.format("%02d:%02d", battlegrounds.WSG.bestTimeEverShow.minutes, battlegrounds.WSG.bestTimeEverShow.seconds) ..
-            "\nBest time AB: " .. string.format("%02d:%02d", battlegrounds.AB.bestTimeEverShow.minutes, battlegrounds.AB.bestTimeEverShow.seconds) 
+            "Best time AV: " .. SecondsToTime(battlegrounds.AV.bestTimeEverShow) ..
+            "\nBest time WSG: " .. SecondsToTime(battlegrounds.WSG.bestTimeEverShow) ..
+            "\nBest time AB: " .. SecondsToTime(battlegrounds.AB.bestTimeEverShow) 
         )
     else
         labelText:SetText("Battlegrounds data not available.")
@@ -219,9 +266,9 @@ end
 local BgTimerButton = CreateFrame("Button", "BgTimerButton", avFrame, "UIPanelButtonTemplate")
 BgTimerButton:SetWidth(100)
 BgTimerButton:SetHeight(25)
-BgTimerButton:SetPoint("TOPLEFT", avFrame, "TOPLEFT", 10, -70)
+BgTimerButton:SetPoint("TOPLEFT", avFrame, "TOPLEFT", 120, -85)
 BgTimerButton:SetText("Reset Timers")
-BgTimerButton.tooltipText = "RightClick to reset all battleground timers"
+BgTimerButton.tooltipText = "Click to reset all battleground timers"
 BgTimerButton:RegisterForClicks("LeftButtonUp", "RightButtonDown")
 BgTimerButton:SetScript("OnClick", function()
   if arg1 == "LeftButton" then
@@ -234,7 +281,7 @@ SetupTooltip(BgTimerButton, BgTimerButton.tooltipText)
 -- WB Frame
 local wbFrame = CreateFrame("Frame", "WBFrame", UIParent)
 wbFrame:SetWidth(200)
-wbFrame:SetHeight(100)
+wbFrame:SetHeight(150)
 wbFrame:SetBackdrop({
   bgFile = "Interface/Tooltips/UI-Tooltip-Background",
   edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -281,11 +328,21 @@ wbWhereCheckbox:SetScript("OnClick", function()
 end)
 SetupTooltip(wbWhereCheckbox, wbWhereCheckbox.tooltipText)
 
+-- WB Timer visual
+local WBTimerFrameCheckbox = CreateFrame("CheckButton", "WBTimerFrameCheckbox", wbFrame, "UICheckButtonTemplate")
+WBTimerFrameCheckbox:SetPoint("TOPLEFT", 10, -60)
+WBTimerFrameCheckboxText:SetText("Timer frame")
+WBTimerFrameCheckbox.tooltipText = "Visualy shows the timer as it updates."
+WBTimerFrameCheckbox:SetScript("OnClick", function()
+  HelpingHand_Settings.WBTimerFrameEnabled = WBTimerFrameCheckbox:GetChecked() and 1 or 0
+end)
+SetupTooltip(WBTimerFrameCheckbox, WBTimerFrameCheckbox.tooltipText)
+
 -- World Bosses Timer button reset/announce
 local WbTimerButton = CreateFrame("Button", "WbTimerButton", wbFrame, "UIPanelButtonTemplate")
 WbTimerButton:SetWidth(100)
 WbTimerButton:SetHeight(25)
-WbTimerButton:SetPoint("TOPLEFT", wbFrame, "TOPLEFT", 10, -65)
+WbTimerButton:SetPoint("TOPLEFT", wbFrame, "TOPLEFT", 10, -95)
 WbTimerButton:SetText("Reset Timer")
 WbTimerButton.tooltipText = "Click to reset timer"
 WbTimerButton:RegisterForClicks("LeftButtonUp", "RightButtonDown")
@@ -458,12 +515,15 @@ function HelpingHand_LoadSettings()
   settingsLoaded = true
   -- Load settings and update checkboxes
   HelpingHand_Settings = HelpingHand_SavedVariables.Settings or
-      { AVEnabled = 0, WBEnabled = 0, WBWhereEnabled = 0, BGTimerEnabled = 0, AVBossesEnabled = 0 }
+      { AVEnabled = 0, WBEnabled = 0, WBTimerFrameEnabled = 0, WBWhereEnabled = 0, BGTimerEnabled = 0, BGTimerFrameEnabled = 0, AVBossesEnabled = 0, AVWarmastersEnabled = 0}
   --avCheckbox:SetChecked(HelpingHand_Settings.AVEnabled == 1)
   wbCheckbox:SetChecked(HelpingHand_Settings.WBEnabled == 1)
   wbWhereCheckbox:SetChecked(HelpingHand_Settings.WBWhereEnabled == 1)
+  WBTimerFrameCheckbox:SetChecked(HelpingHand_Settings.WBTimerFrameEnabled == 1)  
   bgCheckbox:SetChecked(HelpingHand_Settings.BGTimerEnabled == 1)
+  bgTimerFrameCheckbox:SetChecked(HelpingHand_Settings.BGTimerFrameEnabled == 1)  
   avbossesCheckbox:SetChecked(HelpingHand_Settings.AVBossesEnabled == 1)
+  avwarmastersCheckbox:SetChecked(HelpingHand_Settings.AVWarmastersEnabled == 1)
   AutoFixGroupsCheckbox:SetChecked(HelpingHand_Settings.AutoFixGroupsEnabled == 1)
   if HelpingHand_Settings.AVEnabled == 1 then
     EnableAlteracValleyFeatures(true)
@@ -471,14 +531,23 @@ function HelpingHand_LoadSettings()
   if HelpingHand_Settings.WBEnabled == 1 then
     EnableWorldBossesFeatures(true)
   end
+  if HelpingHand_Settings.WBTimerFrameEnabled == 1 then
+    EnableWBTimerFrameFeatures(true)
+  end 
   if HelpingHand_Settings.WBWhereEnabled == 1 then
     EnableWorldBossesWhereFeatures(true)
   end
   if HelpingHand_Settings.BGTimerEnabled == 1 then
     EnableBGTimerFeatures(true)
   end
+  if HelpingHand_Settings.BGTimerFrameEnabled == 1 then
+    EnableBGTimerFrameFeatures(true)
+  end  
   if HelpingHand_Settings.AVBossesEnabled == 1 then
     EnableAVBossesFeatures(true)
+  end
+  if HelpingHand_Settings.AVWarmastersEnabled == 1 then
+    EnableAVWarmastersFeatures(true)
   end
   if HelpingHand_Settings.AutoFixGroupsEnabled == 1 then
     EnableAutoFixGroupsFeatures(true)
@@ -489,19 +558,19 @@ function HelpingHand_LoadSettings()
     AV = {
         name = "AV",
         bestTimeEver = HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.AVbestTime or 0,
-        bestTimeEverShow = (HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.AVbestTimeShow and { minutes = HelpingHand_SavedVariables.Settings.AVbestTimeShow.minutes, seconds = HelpingHand_SavedVariables.Settings.AVbestTimeShow.seconds }) or { minutes = 0, seconds = 0 },
+        bestTimeEverShow = HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.AVbestTimeShow or 0,
 
     },
     WSG = {
         name = "WSG",
         bestTimeEver = HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.WSGbestTime or 0,
-        bestTimeEverShow = (HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.WSGbestTimeShow and { minutes = HelpingHand_SavedVariables.Settings.WSGbestTimeShow.minutes, seconds = HelpingHand_SavedVariables.Settings.WSGbestTimeShow.seconds }) or { minutes = 0, seconds = 0 },
+        bestTimeEverShow = HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.WSGbestTimeShow or 0,
 
     },
     AB = {
         name = "AB",
         bestTimeEver = HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.ABbestTime or 0,
-        bestTimeEverShow = (HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.ABbestTimeShow and { minutes = HelpingHand_SavedVariables.Settings.ABbestTimeShow.minutes, seconds = HelpingHand_SavedVariables.Settings.ABbestTimeShow.seconds }) or { minutes = 0, seconds = 0 },
+        bestTimeEverShow = HelpingHand_SavedVariables.Settings and HelpingHand_SavedVariables.Settings.ABbestTimeShow or 0,
 
     }
   }
