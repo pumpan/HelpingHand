@@ -274,11 +274,12 @@ function EnableBGTimerFeatures(enable)
                 --        end
                 --    end
                 --end
-                if ras == "Horde" and string.find(arg1, ("The Stormpike Aid Station was taken by the Horde")) then
-                    SendChatMessage("*** GY UP! ***", "BATTLEGROUND")
-                elseif ras == Alliance and string.find(arg1, ("The Frostwolf Relief Hut was taken by the Alliance")) then
-                    SendChatMessage("*** GY UP! ***", "BATTLEGROUND")
-                end
+				if ras == "Horde" and string.find(string.lower(arg1), "the stormpike aid station was taken by the horde") then
+					SendChatMessage("*** GY UP! ***", "BATTLEGROUND")
+				elseif ras == "Alliance" and string.find(string.lower(arg1), "the frostwolf relief hut was taken by the alliance") then
+					SendChatMessage("*** GY UP! ***", "BATTLEGROUND")
+				end
+
 
                 if battleground and not hasshown then
                     if battleground.bestTimeEverShow then
