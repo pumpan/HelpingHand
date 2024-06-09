@@ -354,14 +354,13 @@ function EnableBGTimerFeatures(enable)
 
 
                 end
-                if (
-                    string.find(string.lower(arg1), "victory") and not string.find(string.lower(arg1), "near victory")
-                        and not string.find(string.lower(arg1), "daily:")) or
-                    (
-                    string.find(string.lower(arg1), "defeat") and not string.find(string.lower(arg1), "defeated") and
-                        not string.find(string.lower(arg1), "You cannot defeat the Frostwolf clan!")) or
-                    string.find(string.lower(arg1), "wins") then
-                    print("" .. arg1)
+				if (
+					string.find(string.lower(arg1), "victory") and not string.find(string.lower(arg1), "near victory") and not string.find(string.lower(arg1), "daily:")
+					) or (
+					string.find(string.lower(arg1), "defeat") and not string.find(string.lower(arg1), "defeated") and not string.find(string.lower(arg1), "you cannot defeat the frostwolf clan")
+					) or string.find(string.lower(arg1), "wins") then
+					print(arg1)
+
                     --print("tid" .. SecondsToTime(durationInSeconds))
                     SetCurrentBattleground("RESET")
                     -- Stop the timer when victory or defeat message is received
