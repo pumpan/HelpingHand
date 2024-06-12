@@ -103,7 +103,7 @@
 
           -- Setup the button scripts
           yesButton:SetScript("OnClick", function()
-              SendChatMessage("HelpingHand 1.0.0: GLHF with WorldBosses", "SAY")
+              SendChatMessage("HelpingHand 1.0.1: GLHF with WorldBosses", "SAY")
               modEnabled = true
               HideFrame()
           end)
